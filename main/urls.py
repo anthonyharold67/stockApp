@@ -27,11 +27,12 @@ schema_view = get_schema_view(
         default_version="v1",
         description="Clarusway StockApp API",
         terms_of_service="#",
-        contact=openapi.Contact(email="anthonyharold67@gmail.com"), # Change e-mail on this line!
+        # Change e-mail on this line!
+        contact=openapi.Contact(email="anthonyharold67@gmail.com"),
         license=openapi.License(name="BSD License"),
-        ),
-        public=True,
-        permission_classes=[permissions.AllowAny],
+    ),
+    public=True,
+    permission_classes=[permissions.AllowAny],
 )
 
 urlpatterns = [
@@ -39,9 +40,10 @@ urlpatterns = [
     path("account/", include("account.urls")),
     path('stock/', include('stock.urls')),
     path("swagger(<format>\.json|\.yaml)",
-schema_view.without_ui(cache_timeout=0), name="schema-json"),
-path("swagger/", schema_view.with_ui("swagger", cache_timeout=0),
-name="schema-swagger-ui"),
-path("redoc/", schema_view.with_ui("redoc", cache_timeout=0), name="schemaredoc"),
+         schema_view.without_ui(cache_timeout=0), name="schema-json"),
+    path("swagger/", schema_view.with_ui("swagger", cache_timeout=0),
+         name="schema-swagger-ui"),
+    path("redoc/", schema_view.with_ui("redoc",
+         cache_timeout=0), name="schemaredoc"),
 ]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

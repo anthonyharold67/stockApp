@@ -8,8 +8,7 @@ from .models import (
     Transaction
 )
 import datetime
-import locale
-locale.setlocale(locale.LC_ALL, 'Turkish')
+
 
 class CategorySerializer(serializers.ModelSerializer):
     product_count = serializers.SerializerMethodField()
