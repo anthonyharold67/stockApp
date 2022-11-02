@@ -1,3 +1,4 @@
+from unicodedata import category
 from rest_framework import serializers
 from .models import (
     Category,
@@ -11,12 +12,17 @@ import locale
 locale.setlocale(locale.LC_ALL, 'Turkish')
 
 class CategorySerializer(serializers.ModelSerializer):
+    product_count = serializers.SerializerMethodField()
     class Meta:
         model = Category
         fields = (
             'id',
-            'name'
+            'name',
+            'product_count'
         )
+    
+    def get_product_count(self,obj):
+        return Product.objects.filter(category_id=obj.id).count()
 
 
 class BrandSerializer(serializers.ModelSerializer):
@@ -51,13 +57,18 @@ class ProductSerializer(serializers.ModelSerializer):
 
 class CategoryProductsSerializer(serializers.ModelSerializer):
     products = ProductSerializer(many=True)
+    product_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Category
         fields = (
             'name',
-            'products'
+            'products',
+            'product_count'
         )
+    
+    def get_product_count(self,obj):
+        return Product.objects.filter(category_id=obj.id).count()
 
 
 class FirmSerializer(serializers.ModelSerializer):
@@ -79,6 +90,7 @@ class TransactionSerializer(serializers.ModelSerializer):
     product = serializers.StringRelatedField()
     product_id = serializers.IntegerField()
     time_hour = serializers.SerializerMethodField()
+
 
     class Meta:
         model = Transaction
@@ -111,4 +123,4 @@ class TransactionSerializer(serializers.ModelSerializer):
     def get_createds(self,obj):
         return datetime.datetime.strftime(obj.created,'%d.%m.%Y')
     def get_time_hour(self,obj):
-        return datetime.datetime.strftime(obj.created,'%X')
+        return datetime.datetime.strftime(obj.created,"%H:%M")
