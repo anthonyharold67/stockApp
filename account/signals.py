@@ -12,8 +12,9 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
         Token.objects.create(user=instance)
         group = Group.objects.get(name='Read_Only')
         user= User.objects.get(username = instance)
-        user.groups.add(group)
-        user.save()
+        if not user.is_superuser:
+            user.groups.add(group)
+            user.save()
 
 
         

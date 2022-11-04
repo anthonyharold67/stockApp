@@ -20,6 +20,7 @@ class Category(models.Model):
 
 class Brand(models.Model):
     name = models.CharField(max_length=30)
+    image=models.TextField()
 
     def __str__(self):
         return self.name
@@ -41,6 +42,7 @@ class Firm(UpdateCreate):
     name = models.CharField(max_length=30)
     phone = models.CharField(max_length=15)
     address = models.CharField(max_length=200)
+    image=models.TextField()
 
     def __str__(self):
         return self.name
@@ -57,6 +59,8 @@ class Transaction(UpdateCreate):
     transaction = models.SmallIntegerField(choices=TRANSACTION)
     product = models.ForeignKey(
         Product, on_delete=models.CASCADE, related_name='transaction')
+    brand = models.ForeignKey(
+        Brand, on_delete=models.CASCADE, related_name='b_transaction')
     quantity = models.SmallIntegerField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
     price_total = models.DecimalField(

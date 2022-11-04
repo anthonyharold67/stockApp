@@ -29,7 +29,9 @@ class BrandSerializer(serializers.ModelSerializer):
         model = Brand
         fields = (
             'id',
-            'name'
+            'name',
+            'image'
+
         )
 
 
@@ -77,6 +79,7 @@ class FirmSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'phone',
+            'image',
             'address'
         )
 
@@ -86,6 +89,8 @@ class TransactionSerializer(serializers.ModelSerializer):
     user = serializers.StringRelatedField()
     firm = serializers.StringRelatedField()
     firm_id = serializers.IntegerField()
+    brand = serializers.StringRelatedField()
+    brand_id = serializers.IntegerField()
     product = serializers.StringRelatedField()
     product_id = serializers.IntegerField()
     time_hour = serializers.SerializerMethodField()
@@ -98,6 +103,8 @@ class TransactionSerializer(serializers.ModelSerializer):
             'user',
             'firm',
             'firm_id',
+            'brand',
+            'brand_id',
             'transaction',
             'product',
             'product_id',
