@@ -9,10 +9,10 @@ from django.contrib.auth.models import Group
 @receiver(post_save, sender=User)
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
-        Token.objects.create(user=instance)
-        group = Group.objects.get(name='Read_Only')
+        Token.objects.create(user=instance)  
         user= User.objects.get(username = instance)
         if not user.is_superuser:
+            group = Group.objects.get(name='Read_Only') 
             user.groups.add(group)
             user.save()
 
