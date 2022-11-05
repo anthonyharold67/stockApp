@@ -4,11 +4,14 @@ from .models import (
     Brand,
     Product,
     Firm,
-    Transaction
+    Sales,
+    Purchases
 )
 
 admin.site.register(Category)
 admin.site.register(Brand)
 admin.site.register(Product)
 admin.site.register(Firm)
-admin.site.register(Transaction)
+admin.site.register(Purchases)
+admin.site.register(Sales)
+

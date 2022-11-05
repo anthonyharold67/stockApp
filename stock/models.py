@@ -48,23 +48,46 @@ class Firm(UpdateCreate):
         return self.name
 
 
-class Transaction(UpdateCreate):
-    TRANSACTION = (
-        (1, 'IN'),
-        (0, 'OUT')
-    )
+# class Transaction(UpdateCreate):
+#     TRANSACTION = (
+#         (1, 'IN'),
+#         (0, 'OUT')
+#     )
+#     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+#     firm = models.ForeignKey(
+#         Firm, on_delete=models.SET_NULL, null=True, related_name='transactions')
+#     transaction = models.SmallIntegerField(choices=TRANSACTION)
+#     product = models.ForeignKey(
+#         Product, on_delete=models.CASCADE, related_name='transaction')
+#     brand = models.ForeignKey(
+#         Brand, on_delete=models.CASCADE, related_name='b_transaction')
+#     quantity = models.SmallIntegerField()
+#     price = models.DecimalField(max_digits=6, decimal_places=2)
+#     price_total = models.DecimalField(
+#         max_digits=8, decimal_places=2, blank=True)
+
+#     def __str__(self):
+#         return f'{self.transaction} - {self.product} - {self.quantity}'
+
+class Purchases(UpdateCreate):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    firm = models.ForeignKey(
-        Firm, on_delete=models.SET_NULL, null=True, related_name='transactions')
-    transaction = models.SmallIntegerField(choices=TRANSACTION)
-    product = models.ForeignKey(
-        Product, on_delete=models.CASCADE, related_name='transaction')
-    brand = models.ForeignKey(
-        Brand, on_delete=models.CASCADE, related_name='b_transaction')
+    firm = models.ForeignKey(Firm, on_delete=models.SET_NULL, null=True, related_name='purchases')
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='purchase')
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name='b_purchase')
     quantity = models.SmallIntegerField()
     price = models.DecimalField(max_digits=6, decimal_places=2)
-    price_total = models.DecimalField(
-        max_digits=8, decimal_places=2, blank=True)
+    price_total = models.DecimalField(max_digits=8, decimal_places=2, blank=True)
 
     def __str__(self):
-        return f'{self.transaction} - {self.product} - {self.quantity}'
+        return f'{self.product} - {self.quantity}'
+
+class Sales(UpdateCreate):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='sales')
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE, related_name='b_sales')
+    quantity = models.SmallIntegerField()
+    price = models.DecimalField(max_digits=6, decimal_places=2)
+    price_total = models.DecimalField(max_digits=8, decimal_places=2, blank=True)
+
+    def __str__(self):
+        return f'{self.product} - {self.quantity}'

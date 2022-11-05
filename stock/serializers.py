@@ -5,7 +5,8 @@ from .models import (
     Brand,
     Product,
     Firm,
-    Transaction
+    Purchases,
+    Sales
 )
 import datetime
 
@@ -83,8 +84,7 @@ class FirmSerializer(serializers.ModelSerializer):
             'address'
         )
 
-
-class TransactionSerializer(serializers.ModelSerializer):
+class PurchaseSerializer(serializers.ModelSerializer):
     createds=serializers.SerializerMethodField()
     user = serializers.StringRelatedField()
     firm = serializers.StringRelatedField()
@@ -95,9 +95,8 @@ class TransactionSerializer(serializers.ModelSerializer):
     product_id = serializers.IntegerField()
     time_hour = serializers.SerializerMethodField()
 
-
     class Meta:
-        model = Transaction
+        model = Purchases
         fields = (
             'id',
             'user',
@@ -105,7 +104,39 @@ class TransactionSerializer(serializers.ModelSerializer):
             'firm_id',
             'brand',
             'brand_id',
-            'transaction',
+            'product',
+            'product_id',
+            'quantity',
+            'price',
+            'price_total',
+            "created",
+            "createds",
+            "time_hour"
+        )
+
+        read_only_fields = ('price_total',)
+
+    def get_createds(self,obj):
+        return datetime.datetime.strftime(obj.created,'%d.%m.%Y')
+    def get_time_hour(self,obj):
+        return datetime.datetime.strftime(obj.created,"%H:%M")
+
+class SalesSerializer(serializers.ModelSerializer):
+    createds=serializers.SerializerMethodField()
+    user = serializers.StringRelatedField()
+    brand = serializers.StringRelatedField()
+    brand_id = serializers.IntegerField()
+    product = serializers.StringRelatedField()
+    product_id = serializers.IntegerField()
+    time_hour = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Sales
+        fields = (
+            'id',
+            'user',
+            'brand',
+            'brand_id',
             'product',
             'product_id',
             'quantity',
@@ -119,14 +150,58 @@ class TransactionSerializer(serializers.ModelSerializer):
         read_only_fields = ('price_total',)
 
     def validate(self, data):
-        if data.get('transaction') == 0:
-            product = Product.objects.get(id=data.get('product_id'))
-            if data.get('quantity') > product.stock:
-                raise serializers.ValidationError(
-                    f'Dont have enough stock. Current stock is {product.stock}'
-                )
+        product = Product.objects.get(id=data.get('product_id'))
+        if data.get('quantity') > product.stock:
+            raise serializers.ValidationError(f'Dont have enough stock. Current stock is {product.stock}')
         return data
     def get_createds(self,obj):
         return datetime.datetime.strftime(obj.created,'%d.%m.%Y')
     def get_time_hour(self,obj):
         return datetime.datetime.strftime(obj.created,"%H:%M")
+
+# class TransactionSerializer(serializers.ModelSerializer):
+#     createds=serializers.SerializerMethodField()
+#     user = serializers.StringRelatedField()
+#     firm = serializers.StringRelatedField()
+#     firm_id = serializers.IntegerField()
+#     brand = serializers.StringRelatedField()
+#     brand_id = serializers.IntegerField()
+#     product = serializers.StringRelatedField()
+#     product_id = serializers.IntegerField()
+#     time_hour = serializers.SerializerMethodField()
+
+
+#     class Meta:
+#         model = Transaction
+#         fields = (
+#             'id',
+#             'user',
+#             'firm',
+#             'firm_id',
+#             'brand',
+#             'brand_id',
+#             'transaction',
+#             'product',
+#             'product_id',
+#             'quantity',
+#             'price',
+#             'price_total',
+#             "created",
+#             "createds",
+#             "time_hour"
+#         )
+
+#         read_only_fields = ('price_total',)
+
+#     def validate(self, data):
+#         if data.get('transaction') == 0:
+#             product = Product.objects.get(id=data.get('product_id'))
+#             if data.get('quantity') > product.stock:
+#                 raise serializers.ValidationError(
+#                     f'Dont have enough stock. Current stock is {product.stock}'
+#                 )
+#         return data
+#     def get_createds(self,obj):
+#         return datetime.datetime.strftime(obj.created,'%d.%m.%Y')
+#     def get_time_hour(self,obj):
+#         return datetime.datetime.strftime(obj.created,"%H:%M")

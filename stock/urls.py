@@ -4,7 +4,9 @@ from .views import (
     BrandView,
     ProductView,
     FirmView,
-    TransactionView
+    SalesView,
+    PurchaseView
+
 )
 from rest_framework import routers
 
@@ -13,7 +15,8 @@ router.register('category', CategoryView)
 router.register('brand', BrandView)
 router.register('product', ProductView)
 router.register('firm', FirmView)
-router.register('transc', TransactionView)
+router.register('purchases', PurchaseView)
+router.register('sales', SalesView)
 
 urlpatterns = [
 

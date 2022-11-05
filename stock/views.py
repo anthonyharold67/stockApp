@@ -7,7 +7,8 @@ from .models import (
     Brand,
     Product,
     Firm,
-    Transaction
+    Purchases,
+    Sales
 )
 
 from .serializers import (
@@ -15,7 +16,8 @@ from .serializers import (
     BrandSerializer,
     ProductSerializer,
     FirmSerializer,
-    TransactionSerializer,
+    PurchaseSerializer,
+    SalesSerializer,
     CategoryProductsSerializer
 )
 
@@ -60,13 +62,24 @@ class FirmView(viewsets.ModelViewSet):
     search_fields = ['name']
 
 
-class TransactionView(viewsets.ModelViewSet):
-    queryset = Transaction.objects.all()
-    serializer_class = TransactionSerializer
+class PurchaseView(viewsets.ModelViewSet):
+    queryset = Purchases.objects.all()
+    serializer_class = PurchaseSerializer
     permission_classes = [CustomModelPermission]
     filter_backends = [DjangoFilterBackend, filters.SearchFilter]
-    filterset_fields = ['firm', 'transaction', 'product']
+    filterset_fields = ['firm','product']
     search_fields = ['firm']
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
+class SalesView(viewsets.ModelViewSet):
+    queryset = Sales.objects.all()
+    serializer_class = SalesSerializer
+    permission_classes = [CustomModelPermission]
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter]
+    filterset_fields = ['brand','product']
+    search_fields = ['brand']
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
