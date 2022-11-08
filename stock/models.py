@@ -32,7 +32,7 @@ class Product(UpdateCreate):
         Category, on_delete=models.CASCADE, related_name='products')
     brand = models.ForeignKey(
         Brand, on_delete=models.CASCADE, related_name='b_products')
-    stock = models.SmallIntegerField(blank=True, null=True)
+    stock = models.SmallIntegerField(blank=True, default="0")
 
     def __str__(self):
         return self.name

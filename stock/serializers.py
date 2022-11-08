@@ -24,6 +24,7 @@ class CategorySerializer(serializers.ModelSerializer):
     def validate_name(self,value):
         if value and Category.objects.filter(name__exact=value).exists():
             raise serializers.ValidationError("Name already exists!")   
+        return value
     def get_product_count(self,obj):
         return Product.objects.filter(category_id=obj.id).count()
 
@@ -39,6 +40,7 @@ class BrandSerializer(serializers.ModelSerializer):
     def validate_name(self,value):
         if value and Brand.objects.filter(name__exact=value).exists():
             raise serializers.ValidationError("Name already exists!") 
+        return value
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -64,6 +66,7 @@ class ProductSerializer(serializers.ModelSerializer):
     def validate_name(self,value):
         if value and Product.objects.filter(name__exact=value).exists():
             raise serializers.ValidationError("Name already exists!") 
+        return value
 
 
 class CategoryProductsSerializer(serializers.ModelSerializer):
@@ -95,6 +98,7 @@ class FirmSerializer(serializers.ModelSerializer):
     def validate_name(self,value):
         if value and Firm.objects.filter(name__exact=value).exists():
             raise serializers.ValidationError("Name already exists!") 
+        return value
 
 class PurchaseSerializer(serializers.ModelSerializer):
     createds=serializers.SerializerMethodField()
