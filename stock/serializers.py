@@ -21,6 +21,9 @@ class CategorySerializer(serializers.ModelSerializer):
             'product_count'
         )
     
+    def validate_name(self,value):
+        if value and Category.objects.filter(name__exact=value).exists():
+            raise serializers.ValidationError("Name already exists!")   
     def get_product_count(self,obj):
         return Product.objects.filter(category_id=obj.id).count()
 
@@ -32,8 +35,10 @@ class BrandSerializer(serializers.ModelSerializer):
             'id',
             'name',
             'image'
-
         )
+    def validate_name(self,value):
+        if value and Brand.objects.filter(name__exact=value).exists():
+            raise serializers.ValidationError("Name already exists!") 
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -55,6 +60,10 @@ class ProductSerializer(serializers.ModelSerializer):
         )
 
         read_only_fields = ('stock',)
+    
+    def validate_name(self,value):
+        if value and Product.objects.filter(name__exact=value).exists():
+            raise serializers.ValidationError("Name already exists!") 
 
 
 class CategoryProductsSerializer(serializers.ModelSerializer):
@@ -83,6 +92,9 @@ class FirmSerializer(serializers.ModelSerializer):
             'image',
             'address'
         )
+    def validate_name(self,value):
+        if value and Firm.objects.filter(name__exact=value).exists():
+            raise serializers.ValidationError("Name already exists!") 
 
 class PurchaseSerializer(serializers.ModelSerializer):
     createds=serializers.SerializerMethodField()
@@ -129,6 +141,7 @@ class SalesSerializer(serializers.ModelSerializer):
     product = serializers.StringRelatedField()
     product_id = serializers.IntegerField()
     time_hour = serializers.SerializerMethodField()
+    category = serializers.SerializerMethodField()
 
     class Meta:
         model = Sales
@@ -143,6 +156,7 @@ class SalesSerializer(serializers.ModelSerializer):
             'price',
             'price_total',
             "created",
+            'category',
             "createds",
             "time_hour"
         )
@@ -158,6 +172,11 @@ class SalesSerializer(serializers.ModelSerializer):
         return datetime.datetime.strftime(obj.created,'%d.%m.%Y')
     def get_time_hour(self,obj):
         return datetime.datetime.strftime(obj.created,"%H:%M")
+    def get_category(self,obj):
+        products = Product.objects.filter(id=obj.product_id).values()
+        category_id= products[0]['category_id']
+        return list(Category.objects.filter(id=category_id).values())
+
 
 # class TransactionSerializer(serializers.ModelSerializer):
 #     createds=serializers.SerializerMethodField()
