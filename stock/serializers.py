@@ -8,6 +8,9 @@ from .models import (
     Purchases,
     Sales
 )
+from rest_framework.serializers import raise_errors_on_nested_writes
+import traceback
+from rest_framework.utils import model_meta
 import datetime
 
 
@@ -135,7 +138,8 @@ class PurchaseSerializer(serializers.ModelSerializer):
     def get_createds(self,obj):
         return datetime.datetime.strftime(obj.created,'%d.%m.%Y')
     def get_time_hour(self,obj):
-        return datetime.datetime.strftime(obj.created,"%H:%M")
+        return datetime.datetime.strftime(obj.created,"%H:%M") 
+    
 
 class SalesSerializer(serializers.ModelSerializer):
     createds=serializers.SerializerMethodField()
