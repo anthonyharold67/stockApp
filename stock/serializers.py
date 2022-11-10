@@ -126,6 +126,7 @@ class PurchaseSerializer(serializers.ModelSerializer):
             'product',
             'product_id',
             'quantity',
+            'category',
             'price',
             'price_total',
             "created",
