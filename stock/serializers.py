@@ -113,7 +113,7 @@ class PurchaseSerializer(serializers.ModelSerializer):
     product = serializers.StringRelatedField()
     product_id = serializers.IntegerField()
     time_hour = serializers.SerializerMethodField()
-
+    category = serializers.SerializerMethodField()
     class Meta:
         model = Purchases
         fields = (
@@ -126,6 +126,7 @@ class PurchaseSerializer(serializers.ModelSerializer):
             'product',
             'product_id',
             'quantity',
+            'category',
             'price',
             'price_total',
             "created",
@@ -139,6 +140,10 @@ class PurchaseSerializer(serializers.ModelSerializer):
         return datetime.datetime.strftime(obj.created,'%d.%m.%Y')
     def get_time_hour(self,obj):
         return datetime.datetime.strftime(obj.created,"%H:%M") 
+    def get_category(self,obj):
+        products = Product.objects.filter(id=obj.product_id).values()
+        category_id= products[0]['category_id']
+        return list(Category.objects.filter(id=category_id).values())
     
 
 class SalesSerializer(serializers.ModelSerializer):
