@@ -172,3 +172,4 @@ CORS_ALLOW_METHODS = [
     "PUT",
 ]
 
+CSRF_TRUSTED_ORIGINS = ['https://*.fullstack.clarusway.com']
