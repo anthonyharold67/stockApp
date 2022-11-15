@@ -19,7 +19,7 @@ class Category(models.Model):
 
 
 class Brand(models.Model):
-    name = models.CharField(max_length=30)
+    name = models.CharField(max_length=30,unique=True)
     image=models.TextField()
 
     def __str__(self):
@@ -27,7 +27,7 @@ class Brand(models.Model):
 
 
 class Product(UpdateCreate):
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100,unique=True)
     category = models.ForeignKey(
         Category, on_delete=models.CASCADE, related_name='products')
     brand = models.ForeignKey(

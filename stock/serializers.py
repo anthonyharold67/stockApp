@@ -24,10 +24,10 @@ class CategorySerializer(serializers.ModelSerializer):
             'product_count'
         )
     
-    def validate_name(self,value):
-        if value and Category.objects.filter(name__exact=value).exists():
-            raise serializers.ValidationError("Name already exists!")   
-        return value
+    # def validate_name(self,value):
+    #     if value and Category.objects.filter(name__exact=value).exists():
+    #         raise serializers.ValidationError("Name already exists!")   
+    #     return value
     def get_product_count(self,obj):
         return Product.objects.filter(category_id=obj.id).count()
 
@@ -40,10 +40,10 @@ class BrandSerializer(serializers.ModelSerializer):
             'name',
             'image'
         )
-    def validate_name(self,value):
-        if value and Brand.objects.filter(name__exact=value).exists():
-            raise serializers.ValidationError("Name already exists!") 
-        return value
+    # def validate_name(self,value):
+    #     if value and Brand.objects.filter(name__exact=value).exists():
+    #         raise serializers.ValidationError("Name already exists!") 
+    #     return value
 
 
 class ProductSerializer(serializers.ModelSerializer):
@@ -66,10 +66,10 @@ class ProductSerializer(serializers.ModelSerializer):
 
         read_only_fields = ('stock',)
     
-    def validate_name(self,value):
-        if value and Product.objects.filter(name__exact=value).exists():
-            raise serializers.ValidationError("Name already exists!") 
-        return value
+    # def validate_name(self,value):
+    #     if value and Product.objects.filter(name__exact=value).exists():
+    #         raise serializers.ValidationError("Name already exists!") 
+    #     return value
 
 
 class CategoryProductsSerializer(serializers.ModelSerializer):
@@ -98,10 +98,10 @@ class FirmSerializer(serializers.ModelSerializer):
             'image',
             'address'
         )
-    def validate_name(self,value):
-        if value and Firm.objects.filter(name__exact=value).exists():
-            raise serializers.ValidationError("Name already exists!") 
-        return value
+    # def validate_name(self,value):
+    #     if value and Firm.objects.filter(name__exact=value).exists():
+    #         raise serializers.ValidationError("Name already exists!") 
+    #     return value
 
 class PurchaseSerializer(serializers.ModelSerializer):
     createds=serializers.SerializerMethodField()
