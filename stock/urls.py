@@ -11,10 +11,10 @@ from .views import (
 from rest_framework import routers
 
 router = routers.DefaultRouter()
-router.register('category', CategoryView)
-router.register('brand', BrandView)
-router.register('product', ProductView)
-router.register('firm', FirmView)
+router.register('categories', CategoryView)
+router.register('brands', BrandView)
+router.register('products', ProductView)
+router.register('firms', FirmView)
 router.register('purchases', PurchaseView)
 router.register('sales', SalesView)
 
