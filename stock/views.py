@@ -162,8 +162,6 @@ class SalesView(viewsets.ModelViewSet):
             product.stock +=0
         elif sale["quantity"] != instance.quantity: 
             if sale["quantity"] > instance.quantity:
-                print(sale["quantity"])
-                print(product.stock + instance.quantity)
                 if not sale["quantity"] > product.stock + instance.quantity:
                     product.stock -= sale["quantity"] - instance.quantity
                 # elif sale["quantity"] > product.stock:
