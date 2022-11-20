@@ -176,11 +176,6 @@ class SalesSerializer(serializers.ModelSerializer):
 
         read_only_fields = ('price_total',)
 
-    def validate(self, data):
-        product = Product.objects.get(id=data.get('product_id'))
-        if data.get('quantity') > product.stock:
-            raise serializers.ValidationError(f'Dont have enough stock. Current stock is {product.stock}')
-        return data
     def get_createds(self,obj):
         return datetime.datetime.strftime(obj.created,'%d.%m.%Y')
     def get_time_hour(self,obj):
